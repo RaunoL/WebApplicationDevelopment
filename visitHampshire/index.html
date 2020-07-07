@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Visit Hampshire</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./js/main.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="search">
+            <h1>Visit Hampshire</h1>
+            <select id="types">
+                <option >--What are you looking for?--</option>
+                <option value="Hotel">Hotel</option>
+                <option value="BandB">BandB</option>
+                <option value="pub">Pub</option>
+                <option value="campsite">Campsite</option>
+            </select>
+            <button id="search">Search</button>
+            <p style="display: none;" id="error"></p>
+        </div>
+        <div id="errorBox"></div>
+        <div id="results" class="results">
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Assessment Hand-in</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Task 1</h1>
+    <p>Create a web service to allow clients to look up all accommodation in a given location.</p>
+    <p>A route has been set up at https://edward2.solent.ac.uk/~wad1901/api/accommodation/{location}. Replace {location} with a location. This returns all results as an array of json objects.</p>
+    <input id="task1input1" type="text" placeholder="location">
+    <button id="task1">Go</button>
+    <script>
+        document.getElementById("task1").addEventListener('click', () => {
+            let location = document.getElementById("task1input1").value;
+            window.location = `https://edward2.solent.ac.uk/~wad1901/api/accommodation/${location}`;
+        })
+    </script>
+    <h1>Task 2</h1>
+    <p>Create a web service to allow clients to look up all accommodation of a given type in a given location (e.g. all hotels in Hampshire).</p>
+    <p>A route has been set up at https://edward2.solent.ac.uk/~wad1901/api/accommodation/{location}/{type}. The query is required to have both type and location to function.</p>
+    <input id="task2input1" type="text" placeholder="location">
+    <input id="task2input2" type="text" placeholder="type">
+    <button id="task2">Go</button>
+    <script>
+        document.getElementById("task2").addEventListener('click', () => {
+            let location = document.getElementById("task2input1").value;
+            let type = document.getElementById("task2input2").value;
+            window.location = `https://edward2.solent.ac.uk/~wad1901/api/accommodation/${location}/${type}`;
+        })
+    </script>
+    <h1>Task 3</h1>
+    <p>Create a web service to allow clients to book a place of accommodation for a given number of people on a given date. This should communicate its success or otherwise to its clients appropriately. Please note: assume that it is a simplified system
+        in which you do not have to worry about room allocation, differences between adults and children, taking payment, etc.
+    </p>
+    <p>A route has been set up at https://edward2.solent.ac.uk/~wad1901/api/booking/create. It only accepts post requests. The paramaters needed to execute this request are
+    </p>
+    <ul>accID(integer corresponding to the id if the accommodation being booked)</ul>
+    <ul>thedate(the date being booked formated as YYMMDD)</ul>
+    <ul>username(varchar 255)</ul>
+    <ul>npeople(integer corresponding to how many people will be staying)</ul>
+    <p>The date has to be a valid date but it can be any date from past or future. Requests to this route add a booking to acc_bookings table and change the value of availability on specified date in acc_dates table.</p>
+    <p>Response codes</p>
+    <ul>400: invalid or empty data entered</ul>
+    <ul>410: No more space on specified date. Also when the accommodation ID or thedate entered does not exist in acc_dates table. Only dates on April 2020 will work</ul>
+    <ul>201: entry created. booking successful</ul>
+    <input id="task3input1" type="text" placeholder="accID">
+    <input id="task3input2" type="text" placeholder="thedate">
+    <input id="task3input3" type="text" placeholder="username">
+    <input id="task3input4" type="text" placeholder="npeople">
+    <button id="task3">Go</button>
+    <p id="task3output"></p>
+    <script>
+        document.getElementById("task3").addEventListener('click', () => {
+            let accID = document.getElementById("task3input1").value;
+            let thedate = document.getElementById("task3input2").value;
+            let username = document.getElementById("task3input3").value;
+            let npeople = document.getElementById("task3input4").value;
+            let output = document.getElementById("task3output");
+            output.innerHTML = "";
+            $.ajax({
+                url: 'https://edward2.solent.ac.uk/~wad1901/api/booking/create',
+                method: "post",
+
+                data: {
+                    accID: accID,
+                    thedate: thedate,
+                    username: username,
+                    npeople: npeople
+                },
+                dataType: "json",
+                success: (data, text, xhr) => {
+                    output.innerHTML = xhr.status + " " + xhr.statusText;
+                },
+                error: (err) => {
+                    output.innerHTML = err.status + " " + err.statusText;
+                }
+            });
+        });
+    </script>
+    <h1>Task 4</h1>
+    <p>Create an AJAX front end which connects to the web service, and in doing so, allows users to look up all places to stay in a given location. Results must be presented in a user-friendly manner.</p>
+    <p>The ajax front-end is <a href="https://edward2.solent.ac.uk/~wad1901/placesToStay/">here</a></p>
+    <p>To use type a query into search field and click search button. Results will appear on right side of the screen.</p>
+    <h1>Task 5</h1>
+    <p>Create a third-party website, VisitHampshire, which is a tourist information site for Hampshire. It should use the PlacesToStay web service rather than its own database. It should allow its own users to look up places to stay of a given type within
+        Hampshire, making use of the web service. Results must be presented in a user-friendly manner.</p>
+    <p>Visit Hampshire is found <a href="https://edward2.solent.ac.uk/~wad1901/visitHampshire/">here</a></p>
+    <p>To look up places to stay select type of place from the drop down menu and click search. It uses ajax front-end to communicate with its cURL back-end wich communicates with PlacesToStay API</p>
+    <h1>Task 5</h1>
+    <p>PlacesToStay&#39;s own site (not VisitHampshire!) should include web maps (e.g. Leaflet) and should use geolocation to show the user&#39;s current location on a device with GPS or wi-fi enabled.</p>
+    <p>Places to stay is
+        <a href="https://edward2.solent.ac.uk/~wad1901/placesToStay/">here</a>
+    </p>
+    <p>To use the web map user must give permission first. Once user gives location the webmap centers to user's current geolocation. </p>
+    <h1>Task 7</h1>
+    <p>On PlacesToStay&#39;s own site, extend the AJAX search (task 4) so that all items of accommodation in that location will be shown on the map as markers, as well as shown as text search results.</p>
+    <p>Places to stay is
+        <a href="https://edward2.solent.ac.uk/~wad1901/placesToStay/">here</a>
+    </p>
+    <p>To use this feature user must type in a seach query and click search. All the search results will be shown on the map as markers and search results</p>
+    <h1>task 8</h1>
+    <p>VisitHampshire should allow a user to book an item of accommodation on a given date, by interacting with tihe PlacesToStay web service. This task should be linked with task 5. Ideally, the user should be able to specify the number of people; if not,
+        assume one.</p>
+    <p>Vsit Hampshire is found <a href="https://edward2.solent.ac.uk/~wad1901/visitHampshire/">here</a></p>
+    <p>To use this feature users must select an type and search. Then click on "book" button on corresponding search result. This will prompt the user to enter their name, date of booking and number of people.</p>
+    <p>It will communicate its success using alerts.</p>
+    <h1>task 9</h1>
+    <p>When the user clicks on each marker, a popup describing that item of accommodation should appear. The popup should have a &quot;Book&quot; link allowing the user to book the item of accommodation. When the user clicks &quot;Book&quot; they should
+        enter a date (plus ideally the number of people, if not, assume one) and the item should be booked for that date. The user should be provided with feedback as to whether the booking was successful or not. The front-end must fully use JavaScript
+        and AJAX without any page refresh required.
+
+    </p>
+    <p>Places to stay is
+        <a href="https://edward2.solent.ac.uk/~wad1901/placesToStay/">here</a>
+    </p>
+    <p>To use this feature user must search for a location, click search, find and click on the marker on the map, click on "book" button. This will open a form. User must enter a name, number of guests and a date.</p>
+    <p>Then click on "book". This will communicate its success to users. Feedback will be provided once user clicks on book button.</p>
+    <h1>Task 10</h1>
+    <p>Create a new &quot;Check Availability&quot; link on the popup from Task 9. When the user clicks on this link, a graphical view should appear, showing which dates are available, ideally with a colour scheme such as red=booked, green=available. This
+        need not be arranged by month; it can simply be an arbitrary 20 days sometime in the future (e.g. 1-20 June 2020). The server- side component of this task must be written as a web service and the front- end must make use of HTML5 &lt;canvas&gt;
+        (not just &lt;div&gt;s and CSS, or any jQuery UI components or similar) and fully use JavaScript and AJAX without any page refresh required. For an A1 it should then be possible to book a date by clicking on it.</p>
+    <p>Places to stay is
+        <a href="https://edward2.solent.ac.uk/~wad1901/placesToStay/">here</a>
+    </p>
+    <p>To use this feature user must look for a place to stay, click on the marker on map and click on "check availability" button. This will open a calendar where booked dates are red and available dates are green.</p>
+    <p>It can only show availability on April 2020. The calendar uses canvas. If user clicks on any date on the calendar a booking form will be opened and the date field will be filled with a specified date</p>
+    <p>User must enter their name and number of people to finish the booking. Success will be communicated with a small text box.</p>
+    <p>For this task a new route was created in the API at https://edward2.solent.ac.uk/~wad1901/api/availability/{id}. This returns availability of specified accommodation on all the dates of april 2020 as an array of objects.</p>
+
+    <input id="task10input1" type="text" placeholder="id">
+    <button id="task10">Go</button>
+    <script>
+        document.getElementById("task10").addEventListener('click', () => {
+            let id = document.getElementById("task10input1").value;
+            window.location = `https://edward2.solent.ac.uk/~wad1901/api/availability/${id}`;
+        })
+    </script>
+</body>
+
+</html>
